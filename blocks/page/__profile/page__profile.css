@@ -2,4 +2,7 @@
   max-width: 68.75%;
   outline: 1px solid blue;
   margin: 0 auto;
+  margin-bottom: 58px;
+  display: flex;
+  align-items: center;
 }

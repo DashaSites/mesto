@@ -1,0 +1,8 @@
+.element__details {
+  display: flex;
+  margin-top: 25px;
+  margin-left: 21px;
+  width: 246px;
+  color: #000;
+  outline: 1px solid green;
+}

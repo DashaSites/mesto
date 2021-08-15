@@ -32,4 +32,5 @@
 @import url('../blocks/element/__details/element__details.css');
 @import url('../blocks/element/__caption/element__caption.css');
 
-
+/*FOOTER*/
+@import url('../blocks/footer/__copyright/footer__copyright.css');

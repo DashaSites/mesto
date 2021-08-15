@@ -3,4 +3,24 @@
   height: 50px;
   background: transparent;
   border: 2px solid #fff;
+  transition: .3s;
+  padding: 0;
+  padding: 0;
+}
+
+.profile__add-button:hover {
+  opacity: .6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__add-button {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .profile__add-button {
+    width: 100%;
+  }
 }

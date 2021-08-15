@@ -10,5 +10,10 @@
   overflow: hidden;
   background: transparent;
   border: none;
+  transition: .3s;
+}
 
+.popup__close-button:hover {
+  opacity: .6;
+  cursor: pointer;
 }

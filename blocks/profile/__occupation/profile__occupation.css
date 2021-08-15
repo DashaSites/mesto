@@ -5,3 +5,10 @@
   margin: 0;
   padding: 0;
 }
+
+@media screen and (max-width: 767px) {
+  .profile__occupation {
+    font-size: 14px;
+    line-height: 16.94px;
+  }
+}

@@ -1,8 +1,21 @@
 .page__profile {
-  max-width: 68.75%;
-  outline: 1px solid blue;
-  margin: 0 auto;
+  max-width: 100%;
+  margin-top: 0;
+  margin-right: auto;
   margin-bottom: 58px;
+  margin-left: 0;
   display: flex;
   align-items: center;
+  outline: 1px solid blue;
+}
+
+@media screen and (max-width: 767px) {
+  .page__profile {
+    max-width: 88.12%;
+    flex-direction: column;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 36px;
+    margin-left: auto;
+  }
 }

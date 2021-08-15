@@ -1,0 +1,12 @@
+.element__like-button {
+  transition: .3s;
+}
+
+.element__like-button:hover {
+  opacity: .5;
+  cursor: pointer;
+}
+
+.element__like-button:disabled {
+  opacity: 1;
+}

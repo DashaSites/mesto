@@ -6,4 +6,17 @@
   border: 1px solid #fff;
   background: transparent;
   align-self: center;
+  transition: .3s;
+}
+
+.profile__edit-button:hover {
+  opacity: .6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__edit-button {
+    width: 18px;
+    height: 18px;
+  }
 }

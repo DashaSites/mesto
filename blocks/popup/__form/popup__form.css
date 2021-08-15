@@ -1,0 +1,11 @@
+.popup__form {
+  width: 430px;
+  border-radius: 10px;
+  background-color: #fff;
+  outline: 1px solid plum;
+  box-sizing: border-box;
+  padding-top: 34px;
+  padding-right: 36px;
+  padding-bottom: 37px;
+  padding-left: 36px;
+}

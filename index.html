@@ -43,7 +43,7 @@
         <img class="element__image" src="./images/photo-elbrus.png" alt="Фото заката или восхода на Эльбрусе">
         <div class="element__details">
           <h2 class="element__caption">Гора Эльбрус</h2>
-          <img class="element__like-button element__like-button_active" src="./images/button-heart.svg" alt="">
+          <img class="element__like-button" src="./images/button-heart.svg" alt="">
         </div>
       </div>
 
@@ -86,13 +86,30 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <section class="popup"><!--ПОЛУПРОЗРАЧНЫЙ ФОН-->
-    <div class="popup-container">
-      <!--САМО ОКНО С ФОРМОЙ-->
-      <!--КНОПКА-КРЕСТИК, ЕЕ НАДО СПОЗИЦИОНИРОВАТЬ ОТНОСИТЕЛЬНО popup-container-->
+  <section class="popup popup_opened">
+
+    <div class="popup__container">
+
+      <form class="popup__form">
+
+        <h2 class="popup__form-title">Редактировать профиль</h2>
+
+        <input class="popup__form-input-item" type="text" name="name" placeholder="Имя" required>
+
+        <input class="popup__form-input-item" type="text" name="occupation" placeholder="Род занятий" required>
+
+        <button class="popup__submit-button" type="submit">Сохранить</button>
+
+      </form>
+
+      <button class="popup__close-button"><img src="./images/button-close.png" alt=""></button>
+
+      <!-- + КНОПКА-КРЕСТИК, ЕЕ НАДО СПОЗИЦИОНИРОВАТЬ
+      ОТНОСИТЕЛЬНО popup-container С КЛАССОМ popup__close-button-->
 
     </div>
-  </section>
 
+  </section>
+  <!--<script src="./scripts/index.js"></script>*/-->
 </body>
 </html>

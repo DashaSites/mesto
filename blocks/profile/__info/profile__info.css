@@ -6,9 +6,9 @@
 @media screen and (max-width: 767px) {
   .profile__info {
     max-width: 88.12%;
-    margin-top: 26px;
+    margin-top: 0;
     margin-right: auto;
-    margin-bottom: 36px;
+    margin-bottom: 34px;
     margin-left: auto;
     text-align: center;
   }

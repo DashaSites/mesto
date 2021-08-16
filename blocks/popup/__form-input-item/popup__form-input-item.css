@@ -21,3 +21,10 @@
   border-radius: 5px;
 }
 
+@media screen and (max-width: 767px) {
+  .popup__form-input-item {
+    padding-bottom: 7px;
+    margin-bottom: 27px;
+  }
+}
+

@@ -2,8 +2,12 @@
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
-  margin-left: 21px;
-  width: 87.23%;
+  margin-right: auto;
+  margin-bottom: 31px;
+  margin-left: auto;
+  width: 87.2%;
   color: #000;
   outline: 1px solid green;
 }
+
+

@@ -13,6 +13,8 @@
 
 @media screen and (max-width: 767px) {
   .element {
-    max-width: 729px;
+    max-width: 100%;
   }
 }
+
+

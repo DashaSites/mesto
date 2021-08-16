@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 16px;
+  margin-bottom: 7px;
 }
 
 @media screen and (max-width: 767px) {

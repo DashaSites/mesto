@@ -17,3 +17,12 @@
   opacity: .6;
   cursor: pointer;
 }
+
+@media screen and (max-width: 767px) {
+  .popup__close-button {
+    max-height: 20px;
+    max-width: 20px;
+    top: -40px;
+    right: 0;
+  }
+}

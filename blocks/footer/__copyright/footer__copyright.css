@@ -4,6 +4,12 @@
   font-weight: 400;
   color: #545454;
   margin: 0;
-  margin-bottom: 60px;
   padding: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .footer__copyright {
+    font-size: 14px;
+    line-height: 16.94px;
+  }
 }

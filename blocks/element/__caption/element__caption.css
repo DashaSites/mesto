@@ -8,3 +8,10 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@media screen and (max-width: 1023px) {
+  .element__caption {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}

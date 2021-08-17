@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border: 1px solid #fff;
-  background: transparent;
+  background: url(../../../images/button-edit.svg) center no-repeat;
   align-self: center;
   transition: .3s;
 }
@@ -20,3 +20,4 @@
     height: 18px;
   }
 }
+

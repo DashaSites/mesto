@@ -8,51 +8,6 @@
 
 @media screen and (max-width: 767px) {
   .page__header {
-    margin-bottom: 42px;
+    margin-bottom: 40px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-.page__header {
-  max-width: 100%;
-  margin-top: 28px;
-  margin-right: auto;
-  margin-bottom: 56px;
-  margin-left: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-@media screen and (max-width: 1279px) {
-  .page__header {
-    max-width: 90.6%;
-    margin-bottom: 48px;
-  }
-}
-
-@media screen and (max-width: 1023px) {
-  .page__header {
-    max-width: 93.7%;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .page__header {
-    max-width: 90%;
-    margin-top: 16px;
-  }
-}
-*/

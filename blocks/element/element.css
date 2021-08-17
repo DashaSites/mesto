@@ -2,7 +2,6 @@
   max-width: 282px;
   background: #fff;
   border-radius: 5%;
-  outline: 1px solid crimson;
 }
 
 @media screen and (max-width: 1023px) {

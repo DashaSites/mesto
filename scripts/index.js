@@ -8,8 +8,6 @@ let nameInput = document.querySelector('.popup__form-name');
 let jobInput = document.querySelector('.popup__form-occupation');
 
 let form = document.querySelector('.popup__form');
-/*let formElement = document.querySelector('.popup__form-input-item');*/
-
 let formSubmitButton = document.querySelector('.popup__submit-button');
 
 function togglePopup() {
@@ -34,3 +32,4 @@ form.addEventListener(
     userOccupation.textContent = jobInput.value;
   }
 );
+

@@ -4,11 +4,14 @@
   font-weight: 400;
   margin: 0;
   padding: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 767px) {
   .profile__occupation {
     font-size: 14px;
-    line-height: 16.94px;
+    line-height: 16px;
   }
 }

@@ -10,9 +10,6 @@
   background: transparent;
   border: none;
   transition: .3s;
-}
-
-.popup__close-button {
   width: 32px;
   height: 32px;
   background: url(../../../images/button-close.svg) center no-repeat;

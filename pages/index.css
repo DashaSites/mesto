@@ -26,6 +26,7 @@
 /*ELEMENT*/
 @import url('../blocks/element/element.css');
 @import url('../blocks/element/__image/element__image.css');
+@import url('../blocks/element/__button-remove/element__button-remove.css');
 @import url('../blocks/element/__details/element__details.css');
 @import url('../blocks/element/__caption/element__caption.css');
 @import url('../blocks/element/__like-button/element__like-button.css');

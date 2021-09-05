@@ -1,5 +1,4 @@
-
-const openPopupEditProfileButton = document.querySelector('.profile__edit-button'); //КНОПКА ОТКРЫТИЯ ПОПАПА-1
+const buttonPopupEditProfileOpen = document.querySelector('.profile__edit-button'); //КНОПКА ОТКРЫТИЯ ПОПАПА-1
 const popupEditProfile = document.querySelector('.popup_type_edit-profile'); //КОНСТАНТА ДЛЯ ПОПАПА-1 (ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ):
 const userName = document.querySelector('.profile__name');
 const userOccupation = document.querySelector('.profile__occupation');
@@ -7,6 +6,44 @@ const nameInput = popupEditProfile.querySelector('.popup__form-input-item_type_n
 const jobInput = popupEditProfile.querySelector('.popup__form-input-item_type_occupation');
 const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formSubmitEditProfileButton = popupEditProfile.querySelector('.popup__submit-button');
+const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
+const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
+const popupAddCard = document.querySelector('.popup_type_add-card'); // ПОПАП-2
+const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
+const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА "СОЗДАТЬ" В ПОПАПЕ-2
+
+// МАССИВ ИЗ 6 ФОТОГРАФИЙ
+const initialCards = [
+
+  {
+  caption: 'Болото',
+  image: './images/hippos.jpg'
+},
+{
+  caption: 'Нида',
+  image: './images/nida.png'
+},
+{
+  caption: 'Яффо',
+  image: './images/jaffa.jpg'
+},
+{
+  caption: 'Эфиопия',
+  image: './images/ethiopia.jpg'
+},
+{
+  caption: 'Серенгети',
+  image: './images/serengeti.jpg'
+},
+{
+  caption: 'Тарангире',
+  image: './images/tarangire.jpg'
+}
+];
+
+const cardsElement = document.querySelector('.elements'); // КОНТЕЙНЕР ДЛЯ ЗАПИХИВАНИЯ МАССИВА ФОТОГРАФИЙ
+const cardTemplate = document.querySelector('#card-template').content;
+
 
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-1
 function openPopupEditProfile() {
@@ -18,85 +55,11 @@ function openPopupEditProfile() {
   openPopup(popupEditProfile);
 }
 
-// ОТМЕНА ОТПРАВКИ ДАННЫХ ФОРМЫ НА СЕРВЕР
-function formSubmitHandler(event) {
-  event.preventDefault();
-}
+buttonPopupEditProfileOpen.addEventListener('click', openPopupEditProfile); //СЛУШАТЕЛЬ КЛИКОВ НА КНОПКЕ ОТКРЫТИЯ ПОПАПА-1
 
-openPopupEditProfileButton.addEventListener('click', openPopupEditProfile); //СЛУШАТЕЛЬ КЛИКОВ НА КНОПКЕ ОТКРЫТИЯ ПОПАПА-1
-
-// ФУНКЦИЯ ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ В ПОПАПЕ-1
-formEditProfile.addEventListener(
-  'submit',
-  function formSubmitHandler(event) {
-    event.preventDefault();
-    popupEditProfile.classList.toggle('popup_opened');
-    userName.textContent = nameInput.value;
-    userOccupation.textContent = jobInput.value;
-  }
-);
-
-//////////////////// ОСНОВНОЙ КОД 5-ГО СПРИНТА //////////////////////
-
-
-// МАССИВ ИЗ 6 ФОТОГРАФИЙ
-const initialCards = [ // СОБСТВЕННО МАССИВ
-
-    {
-    caption: 'Болото',
-    image: './images/hippos.jpg'
-  },
-  {
-    caption: 'Нида',
-    image: './images/nida.png'
-  },
-  {
-    caption: 'Яффо',
-    image: './images/jaffa.jpg'
-  },
-  {
-    caption: 'Эфиопия',
-    image: './images/ethiopia.jpg'
-  },
-  {
-    caption: 'Серенгети',
-    image: './images/serengeti.jpg'
-  },
-  {
-    caption: 'Тарангире',
-    image: './images/tarangire.jpg'
-  }
-];
-
-const cardsElement = document.querySelector('.elements'); // КОНТЕЙНЕР ДЛЯ ЗАПИХИВАНИЯ МАССИВА ФОТОГРАФИЙ
-const elementTemplate = document.querySelector('#card-template').content;
-
-
-// ФУНКЦИИ
-// ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ КАРТОЧЕК ИЗ ФОТОГАЛЕРЕИ
-const removeElementHandler = (event) => {
-  event.target.closest('.element').remove();
-};
-
-// ФУНКЦИЯ ДЛЯ ВЫКЛАДЫВАНИЯ ФОТКИ ИЗ МАССИВА НА САЙТ ЧЕРЕЗ ШАБЛОН
-const addElement = (data) => {
-  const cardElement = elementTemplate.querySelector('.element').cloneNode(true);
-  cardElement.querySelector('.element__image').src = data.image;
-  cardElement.querySelector('.element__image').alt = 'Фотография на карточке';
-  cardElement.querySelector('.element__caption').textContent = data.caption;
-  cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
-  cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
-  cardElement.querySelector('.element__image').addEventListener('click', openImagePopup); // ПРИВЯЗАЛИ К КАРТИНКЕ НА КАРТОЧКЕ СЛУШАТЕЛЬ КЛИКОВ ПО ЭТОЙ КАРТИНКЕ
-
-  cardsElement.prepend(cardElement);
-};
-
-const popup = document.querySelector('.popup'); // ОБЩАЯ КОНСТАНТА ДЛЯ ПОПАПА
-
-const closePopupButtons = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
 
 // СЛУШАТЕЛЬ КЛИКОВ ПО ВСЕЙ КОЛЛЕКЦИИ КНОПОК ЗАКРЫТИЯ ПОПАПА
-closePopupButtons.forEach((item) => {
+buttonsPopupClose.forEach((item) => {
   item.addEventListener('click', closePopup);
 });
 
@@ -104,6 +67,45 @@ closePopupButtons.forEach((item) => {
 function closePopup(event) {
   event.target.closest('.popup').classList.remove('popup_opened');
 };
+
+// ФУНКЦИЯ ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ В ПОПАПЕ-1
+formEditProfile.addEventListener(
+  'submit',
+  function formSubmitHandler(event) {
+    event.preventDefault();
+    closePopup(event);
+    userName.textContent = nameInput.value;
+    userOccupation.textContent = jobInput.value;
+  }
+);
+
+
+// ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ КАРТОЧЕК ИЗ ФОТОГАЛЕРЕИ
+const removeElementHandler = (event) => {
+  event.target.closest('.element').remove();
+};
+
+// ФУНКЦИЯ ДЛЯ ВЫКЛАДЫВАНИЯ ФОТКИ ИЗ МАССИВА НА САЙТ ЧЕРЕЗ ШАБЛОН
+
+const createCard = (data) => { // !!! У меня было const addElement = (data) => // Я ТУТ И НИЖЕ ЗАМЕНИЛА data на cardData
+  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  cardElement.querySelector('.element__image').src = data.image;
+  cardElement.querySelector('.element__image').alt = ' ';
+  cardElement.querySelector('.element__caption').textContent = data.caption;
+  cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
+  cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
+  cardElement.querySelector('.element__image').addEventListener('click', openImagePopup); // ПРИВЯЗАЛИ К КАРТИНКЕ НА КАРТОЧКЕ СЛУШАТЕЛЬ КЛИКОВ ПО ЭТОЙ КАРТИНКЕ
+
+  return cardElement;
+};
+
+
+// ДЛЯ МАССИВА КАРТОЧЕК ВЫЗЫВАЕМ ФУНКЦИЮ, ЧТОБЫ ПРОЙТИСЬ ПО ВСЕМУ МАССИМУ И
+//ВЫЛОЖИТЬ ВСЕ ЕГО ФОТКИ НА САЙТ. АРГУМЕНТ ФУНКЦИИ СЕМАНТИЧНО ОБОЗНАЧАЕМ КАК ЭЛЕМЕНТ ЭТОГО МАССИВА
+initialCards.forEach((element) => {
+  cardsElement.prepend(createCard(element));
+});
+
 
 // ОБЩАЯ ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА, КОТОРАЯ ИСПОЛЬЗУЕТСЯ В ДРУГИХ ФУНКЦИЯХ ОТКРЫТИЯ
 function openPopup(popup) {
@@ -124,6 +126,10 @@ function openImagePopup(event) {
   .closest('.element')
   .querySelector('.element__caption')
   .textContent;
+  imagePopupElement.alt = event.target
+  .closest('.element')
+  .querySelector('.element__caption')
+  .textContent;
 };
 
 
@@ -134,46 +140,34 @@ function likeButtonHandler(event) {
 };
 
 
-initialCards.forEach((element) => { // ДЛЯ МАССИВА КАРТОЧЕК ВЫЗЫВАЕМ ФУНКЦИЮ, ЧТОБЫ ПРОЙТИСЬ ПО ВСЕМУ МАССИМУ И ВЫЛОЖИТЬ ВСЕ ЕГО ФОТКИ НА САЙТ. АРГУМЕНТ ФУНКЦИИ СЕМАНТИЧНО ОБОЗНАЧАЕМ КАК ЭЛЕМЕНТ ЭТОГО МАССИВА
-  addElement(element);
-});
-
-
 //////// ПОПАП-2: ОТКРЫТИЕ-ЗАКРЫТИЕ ФОРМЫ + ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ////////
-
-const openPopupAddCardButton = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
-const popupAddCard = document.querySelector('.popup_type_add-card'); // ПОПАП-2
-
-const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
-const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА "СОЗДАТЬ" В ПОПАПЕ-2
-
 
 // ФУНКЦИЯ ВКЛЮЧЕНИЯ ПОПАПА-2
 function openPopupAddCard() {
   openPopup(popupAddCard);
 }
 
-openPopupAddCardButton.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
+buttonPopupAddCardOpen.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
 
-//КОНСТАНТЫ ДЛЯ ДОБАВЛЕНИЯ И СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ
+//ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
 const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
 const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
-const cardElement = elementTemplate.querySelector('.element').cloneNode(true);
+const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
 
 
 // ФУНКЦИЯ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
 
-const addingElementHandler = (event) => {
+const addingElementHandler = event => {
   event.preventDefault(); // ОТМЕНЯЕМ ОТПРАВКУ ДАННЫХ НА СЕРВЕР
 
-  addElement({ // ВСТАВЛЯЕМ НА САЙТ ФОТКУ И ЕЕ ПОДПИСЬ ИЗ ФОРМЫ
-    image: cardImage.value,
-    caption: cardCaption.value
-    });
+  const image = cardImage.value,
+  caption = cardCaption.value
+  cardsElement.prepend(createCard({ image, caption }));
 
-    formAddCard.reset(); // ПОСЛЕ ЧЕГО СБРАСЫВАЕМ ПОЛЯ ФОРМЫ
+  formAddCard.reset(); // ПОСЛЕ ЧЕГО СБРАСЫВАЕМ ПОЛЯ ФОРМЫ
 
-  popupAddCard.classList.remove('popup_opened'); // И СРАЗУ ПОСЛЕ ВСЕГО ЭТОГО ЗАКРЫВАЕМ ПОПАП
+  closePopup(event);
 };
 
 formAddCard.addEventListener('submit', addingElementHandler); // ВЫЗОВ ОПИСАННОЙ ВЫШЕ ФУНКЦИИ
+

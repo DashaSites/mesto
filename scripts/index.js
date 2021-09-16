@@ -8,9 +8,22 @@ const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formSubmitEditProfileButton = popupEditProfile.querySelector('.popup__submit-button');
 const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
 const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
-const popupAddCard = document.querySelector('.popup_type_add-card'); // ПОПАП-2
+const popupAddCard = document.querySelector('.popup_type_add-card'); // КОНСТАНТА ДЛЯ ПОПАПА-2
 const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
 const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА "СОЗДАТЬ" В ПОПАПЕ-2
+
+const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-input-item',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_invalid',
+  inputErrorClass: 'popup__form-input-item_type_error',
+  errorClass: 'error_visible'
+};
+
+enableValidation(validationConfig);
 
 // МАССИВ ИЗ 6 ФОТОГРАФИЙ
 const initialCards = [
@@ -87,7 +100,7 @@ const removeElementHandler = (event) => {
 
 // ФУНКЦИЯ ДЛЯ ВЫКЛАДЫВАНИЯ ФОТКИ ИЗ МАССИВА НА САЙТ ЧЕРЕЗ ШАБЛОН
 
-const createCard = (data) => { // !!! У меня было const addElement = (data) => // Я ТУТ И НИЖЕ ЗАМЕНИЛА data на cardData
+const createCard = (data) => {
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
   cardElement.querySelector('.element__image').src = data.image;
   cardElement.querySelector('.element__image').alt = ' ';
@@ -112,9 +125,9 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
 
+
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-3 (УВЕЛИЧЕННАЯ КАРТОЧКА) ПО КЛИКУ НА КАРТИНКУ
 function openImagePopup(event) {
-  const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
   const imagePopupElement = imagePopup.querySelector('.popup__image'); // ФОТОГРАФИЯ В ПОПАПЕ-3
   const captionPopupElement = imagePopup.querySelector('.popup__caption'); // ПОДПИСЬ В ПОПАПЕ-3
 
@@ -170,4 +183,29 @@ const addingElementHandler = event => {
 };
 
 formAddCard.addEventListener('submit', addingElementHandler); // ВЫЗОВ ОПИСАННОЙ ВЫШЕ ФУНКЦИИ
+
+
+// ЗАКРЫТИЕ ПОПАПА НАЖАТИЕМ НА ESC
+
+document.addEventListener('keydown', function(event) {
+
+  if (event.key === 'Escape') {
+    popupEditProfile.classList.remove('popup_opened');
+    popupAddCard.classList.remove('popup_opened');
+    imagePopup.classList.remove('popup_opened');
+  }
+});
+
+
+// ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
+
+const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ
+
+popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ ПРИ КЛИКЕ СООТВЕТСТВУЮЩИЙ ПОПАП
+  item.addEventListener('click', function(event) {
+    if (event.target.classList.contains('popup_opened')) {
+      closePopup(event);
+    }
+  });
+});
 

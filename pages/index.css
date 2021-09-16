@@ -1,17 +1,17 @@
 @import url('../vendors/normalize.css');
 @import url('../vendors/fonts/fonts.css');
 
-/*PAGE*/
+/* PAGE */
 @import url('../blocks/page/page.css');
 @import url('../blocks/page/__header/page__header.css');
 @import url('../blocks/page/__profile/page__profile.css');
 @import url('../blocks/page/__elements/page__elements.css');
 @import url('../blocks/page/__footer/page__footer.css');
 
-/*HEADER*/
+/* HEADER */
 @import url('../blocks/header/__logo/header__logo.css');
 
-/*PROFILE*/
+/* PROFILE */
 @import url('../blocks/profile/__image/profile__image.css');
 @import url('../blocks/profile/__info/profile__info.css');
 @import url('../blocks/profile/__name-block/profile__name-block.css');
@@ -20,10 +20,10 @@
 @import url('../blocks/profile/__edit-button/profile__edit-button.css');
 @import url('../blocks/profile/__add-button/profile__add-button.css');
 
-/*ELEMENTS*/
+/* ELEMENTS */
 @import url('../blocks/elements/elements.css');
 
-/*ELEMENT*/
+/* ELEMENT */
 @import url('../blocks/element/element.css');
 @import url('../blocks/element/__image/element__image.css');
 @import url('../blocks/element/__button-remove/element__button-remove.css');
@@ -32,21 +32,29 @@
 @import url('../blocks/element/__like-button/element__like-button.css');
 @import url('../blocks/element/__like-button/_active/element__like-button_active.css');
 
-/*FOOTER*/
+/* FOOTER */
 @import url('../blocks/footer/__copyright/footer__copyright.css');
 
-/*POPUP*/
+/* POPUP */
 @import url('../blocks/popup/popup.css');
 @import url('../blocks/popup/_opened/popup_opened.css');
 @import url('../blocks/popup/__container/popup__container.css');
 @import url('../blocks/popup/__form/popup__form.css');
 @import url('../blocks/popup/__form-title/popup__form-title.css');
 @import url('../blocks/popup/__form-input-item/popup__form-input-item.css');
+@import url('../blocks/popup/__form-input-item/_type/popup__form-input-item_type_error.css');
+
+
 @import url('../blocks/popup/__submit-button/popup__submit-button.css');
+@import url('../blocks/popup/__submit-button/_invalid/popup__submit-button_invalid.css');
+
 @import url('../blocks/popup/__close-button/popup__close-button.css');
 @import url('../blocks/popup/_type/popup_type_large-image.css');
 @import url('../blocks/popup/__content/popup__content.css');
 @import url('../blocks/popup/__image/popup__image.css');
 @import url('../blocks/popup/__caption/popup__caption.css');
 
+/* ERROR */
+@import url('../blocks/error/error.css');
+@import url('../blocks/error/_visible/error_visible.css');
 

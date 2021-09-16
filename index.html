@@ -34,24 +34,34 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <section class="popup popup_type_edit-profile">
+  <section class="popup popup_type_edit-profile"> <!-- ПОПАП-1 -->
     <div class="popup__container">
-      <form class="popup__form" name="form">
+      <form class="popup__form" name="form"> <!-- formSelector -->
         <h2 class="popup__form-title">Редактировать профиль</h2>
-        <input class="popup__form-input-item popup__form-input-item_type_name" type="text" name="name" placeholder="Имя" required>
-        <input class="popup__form-input-item popup__form-input-item_type_occupation" type="text" name="occupation" placeholder="Род занятий" required>
+
+        <input id="user-name" class="popup__form-input-item popup__form-input-item_type_name" type="text" name="name" placeholder="Имя" required minlength="2" maxlength="40">
+        <span id="user-name-error" class="error"></span>
+
+        <input id="user-occupation" class="popup__form-input-item popup__form-input-item_type_occupation" type="text" name="occupation" placeholder="Род занятий" required minlength="2" maxlength="200">
+        <span id="user-occupation-error" class="error"></span>
+
         <button class="popup__submit-button" type="submit">Сохранить</button>
       </form>
       <button class="popup__close-button" type="button"></button>
     </div>
   </section>
 
-  <section class="popup popup_type_add-card">
+  <section class="popup popup_type_add-card"> <!-- ПОПАП-2 -->
     <div class="popup__container">
-      <form class="popup__form" name="form">
+      <form class="popup__form" name="form"> <!-- formSelector -->
         <h2 class="popup__form-title">Новое место</h2>
-        <input class="popup__form-input-item popup__form-input-item_type_title" type="text" name="title" placeholder="Название" required>
-        <input class="popup__form-input-item popup__form-input-item_type_image-link" type="text" name="image" placeholder="Ссылка на картинку" required>
+
+        <input id="title-card" class="popup__form-input-item popup__form-input-item_type_title" type="text" name="title" placeholder="Название" required minlength="2" maxlength="30">
+        <span id="title-card-error" class="error"></span>
+
+        <input id="link" class="popup__form-input-item popup__form-input-item_type_image-link" type="url" name="image" placeholder="Ссылка на картинку" required>
+        <span id="link-error" class="error"></span>
+
         <button class="popup__submit-button" type="submit">Создать</button>
       </form>
       <button class="popup__close-button" type="button"></button>
@@ -77,6 +87,7 @@
     </div>
   </template>
 
+  <script src="./scripts/validate.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 </html>

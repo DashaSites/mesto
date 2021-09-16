@@ -197,6 +197,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 
+
 // ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
 
 const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ

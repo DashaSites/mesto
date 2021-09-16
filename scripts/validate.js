@@ -80,4 +80,3 @@ const enableValidation = (config) => {
     );
   });
 };
-

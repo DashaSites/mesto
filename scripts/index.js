@@ -76,9 +76,12 @@ buttonsPopupClose.forEach((item) => {
   item.addEventListener('click', closePopup);
 });
 
+
 // ОБЩАЯ ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ
 function closePopup(event) {
   event.target.closest('.popup').classList.remove('popup_opened');
+
+  document.removeEventListener('keydown', closePopupByEsc); // СНИМАЕМ СЛУШАТЕЛЬ КЛИКОВ ПО ESC ДЛЯ СВОРАЧИВАНИЯ ПОПАПА
 };
 
 // ФУНКЦИЯ ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ В ПОПАПЕ-1
@@ -120,9 +123,20 @@ initialCards.forEach((element) => {
 });
 
 
+// ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
+const closePopupByEsc = (event) => {
+
+  if (event.key === 'Escape') {
+    document.querySelector('.popup_opened').classList.remove('popup_opened');
+  }
+};
+
+
 // ОБЩАЯ ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА, КОТОРАЯ ИСПОЛЬЗУЕТСЯ В ДРУГИХ ФУНКЦИЯХ ОТКРЫТИЯ
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+
+  document.addEventListener('keydown', closePopupByEsc); // ВЕШАЕМ СЛУШАТЕЛЬ КЛИКОВ ПО ESC ДЛЯ СВОРАЧИВАНИЯ ПОПАПА
 }
 
 
@@ -162,6 +176,7 @@ function openPopupAddCard() {
 
 buttonPopupAddCardOpen.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
 
+
 //ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
 const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
 const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
@@ -183,19 +198,6 @@ const addingElementHandler = event => {
 };
 
 formAddCard.addEventListener('submit', addingElementHandler); // ВЫЗОВ ОПИСАННОЙ ВЫШЕ ФУНКЦИИ
-
-
-// ЗАКРЫТИЕ ПОПАПА НАЖАТИЕМ НА ESC
-
-document.addEventListener('keydown', function(event) {
-
-  if (event.key === 'Escape') {
-    popupEditProfile.classList.remove('popup_opened');
-    popupAddCard.classList.remove('popup_opened');
-    imagePopup.classList.remove('popup_opened');
-  }
-});
-
 
 
 // ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ

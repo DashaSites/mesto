@@ -32,40 +32,43 @@ const hasNotInputValues = (inputList) => {
   });
 };
 
-const disableSubmitButton = (buttonElement, inactiveButtonClass) => {
-  buttonElement.classList.add(inactiveButtonClass);
+const disableSubmitButton = (buttonElement, disabledButtonClass) => {
+  buttonElement.classList.add(disabledButtonClass);
 };
 
-const enableSubmitButton = (buttonElement, inactiveButtonClass) => {
-  buttonElement.classList.remove(inactiveButtonClass);
+const enableSubmitButton = (buttonElement, disabledButtonClass) => {
+  buttonElement.classList.remove(disabledButtonClass);
 };
 
-const toggleButtonState = (formElement, inputList, submitButtonSelector, inactiveButtonClass) => {
+const toggleButtonState = (formElement, inputList, submitButtonSelector, disabledButtonClass) => {
   const buttonElement = formElement.querySelector(submitButtonSelector);
 
   if (hasInvalidInput(inputList) || hasNotInputValues(inputList)) {
-    disableSubmitButton(buttonElement, inactiveButtonClass);
+    disableSubmitButton(buttonElement, disabledButtonClass);
   } else {
-    enableSubmitButton(buttonElement, inactiveButtonClass);
+    enableSubmitButton(buttonElement, disabledButtonClass);
   }
 };
 
-const setEventListeners = (formElement, inputSelector, submitButtonSelector, inputErrorClass, errorClass, inactiveButtonClass) => {
+const setEventListeners = (formElement, inputSelector, submitButtonSelector, inputErrorClass, errorClass, disabledButtonClass) => {
   formElement.addEventListener('submit', (event) => {
     event.preventDefault();
+    // ПРИ САБМИТЕ ФОРМЫ ДЕАКТИВИРУЕМ КНОПКУ САБМИТА:
+    toggleButtonState(formElement, inputList, submitButtonSelector, disabledButtonClass);
   });
 
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
   inputList.forEach(inputElement => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
-      toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass);
+      toggleButtonState(formElement, inputList, submitButtonSelector, disabledButtonClass);
     });
   });
 
-  toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass);
+  toggleButtonState(formElement, inputList, submitButtonSelector, disabledButtonClass);
 };
 
+// ФУНКЦИЯ ВАЛИДАЦИИ ВСЕХ ФОРМ
 
 const enableValidation = (config) => {
   const formList = document.querySelectorAll(config.formSelector);
@@ -76,7 +79,7 @@ const enableValidation = (config) => {
       config.submitButtonSelector,
       config.inputErrorClass,
       config.errorClass,
-      config.inactiveButtonClass
+      config.disabledButtonClass
     );
   });
 };

@@ -1,3 +1,5 @@
+////////// ПЕРЕМЕННЫЕ //////////
+
 const buttonPopupEditProfileOpen = document.querySelector('.profile__edit-button'); //КНОПКА ОТКРЫТИЯ ПОПАПА-1
 const popupEditProfile = document.querySelector('.popup_type_edit-profile'); //КОНСТАНТА ДЛЯ ПОПАПА-1 (ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ):
 const userName = document.querySelector('.profile__name');
@@ -10,53 +12,25 @@ const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // 
 const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
 const popupAddCard = document.querySelector('.popup_type_add-card'); // КОНСТАНТА ДЛЯ ПОПАПА-2
 const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
-const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА "СОЗДАТЬ" В ПОПАПЕ-2
-
+const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА САБМИТА В ПОПАПЕ-2
 const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
 
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__form-input-item',
   submitButtonSelector: '.popup__submit-button',
-  inactiveButtonClass: 'popup__submit-button_invalid',
+  disabledButtonClass: 'popup__submit-button_disabled',
   inputErrorClass: 'popup__form-input-item_type_error',
   errorClass: 'error_visible'
 };
 
-enableValidation(validationConfig);
-
-// МАССИВ ИЗ 6 ФОТОГРАФИЙ
-const initialCards = [
-
-  {
-  caption: 'Болото',
-  image: './images/hippos.jpg'
-},
-{
-  caption: 'Нида',
-  image: './images/nida.png'
-},
-{
-  caption: 'Яффо',
-  image: './images/jaffa.jpg'
-},
-{
-  caption: 'Эфиопия',
-  image: './images/ethiopia.jpg'
-},
-{
-  caption: 'Серенгети',
-  image: './images/serengeti.jpg'
-},
-{
-  caption: 'Тарангире',
-  image: './images/tarangire.jpg'
-}
-];
 
 const cardsElement = document.querySelector('.elements'); // КОНТЕЙНЕР ДЛЯ ЗАПИХИВАНИЯ МАССИВА ФОТОГРАФИЙ
 const cardTemplate = document.querySelector('#card-template').content;
 
+
+
+////////// ФУНКЦИИ //////////
 
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-1
 function openPopupEditProfile() {
@@ -67,8 +41,6 @@ function openPopupEditProfile() {
 
   openPopup(popupEditProfile);
 }
-
-buttonPopupEditProfileOpen.addEventListener('click', openPopupEditProfile); //СЛУШАТЕЛЬ КЛИКОВ НА КНОПКЕ ОТКРЫТИЯ ПОПАПА-1
 
 
 // СЛУШАТЕЛЬ КЛИКОВ ПО ВСЕЙ КОЛЛЕКЦИИ КНОПОК ЗАКРЫТИЯ ПОПАПА
@@ -105,8 +77,9 @@ const removeElementHandler = (event) => {
 
 const createCard = (data) => {
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-  cardElement.querySelector('.element__image').src = data.image;
-  cardElement.querySelector('.element__image').alt = ' ';
+  const elementImage = cardElement.querySelector('.element__image');
+  elementImage.src = data.image;
+  elementImage.alt = ' ';
   cardElement.querySelector('.element__caption').textContent = data.caption;
   cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
   cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
@@ -114,13 +87,6 @@ const createCard = (data) => {
 
   return cardElement;
 };
-
-
-// ДЛЯ МАССИВА КАРТОЧЕК ВЫЗЫВАЕМ ФУНКЦИЮ, ЧТОБЫ ПРОЙТИСЬ ПО ВСЕМУ МАССИМУ И
-//ВЫЛОЖИТЬ ВСЕ ЕГО ФОТКИ НА САЙТ. АРГУМЕНТ ФУНКЦИИ СЕМАНТИЧНО ОБОЗНАЧАЕМ КАК ЭЛЕМЕНТ ЭТОГО МАССИВА
-initialCards.forEach((element) => {
-  cardsElement.prepend(createCard(element));
-});
 
 
 // ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
@@ -167,6 +133,7 @@ function likeButtonHandler(event) {
 };
 
 
+
 //////// ПОПАП-2: ОТКРЫТИЕ-ЗАКРЫТИЕ ФОРМЫ + ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ////////
 
 // ФУНКЦИЯ ВКЛЮЧЕНИЯ ПОПАПА-2
@@ -185,9 +152,8 @@ const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
 
 // ФУНКЦИЯ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
 
-const addingElementHandler = event => {
+const addNewCardData = event => {
   event.preventDefault(); // ОТМЕНЯЕМ ОТПРАВКУ ДАННЫХ НА СЕРВЕР
-
   const image = cardImage.value,
   caption = cardCaption.value
   cardsElement.prepend(createCard({ image, caption }));
@@ -195,20 +161,26 @@ const addingElementHandler = event => {
   formAddCard.reset(); // ПОСЛЕ ЧЕГО СБРАСЫВАЕМ ПОЛЯ ФОРМЫ
 
   closePopup(event);
+  // КНОПКУ САБМИТА ПОСЛЕ САБМИТА ФОРМЫ ДЕАКТИВИРУЕМ В ФАЙЛЕ VALIDATE.JS
 };
 
-formAddCard.addEventListener('submit', addingElementHandler); // ВЫЗОВ ОПИСАННОЙ ВЫШЕ ФУНКЦИИ
-
-
 // ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
-
 const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ
 
 popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ ПРИ КЛИКЕ СООТВЕТСТВУЮЩИЙ ПОПАП
-  item.addEventListener('click', function(event) {
+  item.addEventListener('mousedown', function(event) {
     if (event.target.classList.contains('popup_opened')) {
       closePopup(event);
     }
   });
 });
+
+
+////////// ВЫЗОВЫ ФУНКЦИЙ //////////
+
+buttonPopupEditProfileOpen.addEventListener('click', openPopupEditProfile); //СЛУШАТЕЛЬ КЛИКОВ НА КНОПКЕ ОТКРЫТИЯ ПОПАПА-1
+
+formAddCard.addEventListener('submit', addNewCardData); // ВЫЗОВ ФУНКЦИИ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
+
+enableValidation(validationConfig); // ВЫЗОВ ФУНКЦИИ ВАЛИДАЦИИ ВСЕХ ФОРМ
 

@@ -4,6 +4,7 @@
     object-fit: cover;
     object-position: centered;
     border-radius: 5% 5% 0 0;
+    display: block;
 }
 
 .element__image:hover {

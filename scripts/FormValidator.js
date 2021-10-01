@@ -1,3 +1,11 @@
+/*
+class FormValidator {
+    constructor() {
+
+  }
+}
+*/
+
 const showInputError = (inputElement, errorElement, inputErrorClass, errorClass) => {
   inputElement.classList.add(inputErrorClass);
   errorElement.textContent = inputElement.validationMessage;
@@ -83,3 +91,14 @@ const enableValidation = (config) => {
     );
   });
 };
+
+/*export { showInputError,
+  hideInputError,
+  checkInputValidity,
+  hasInvalidInput,
+  hasNotInputValues,
+  disableSubmitButton,
+  enableSubmitButton,
+  toggleButtonState,
+  setEventListeners,
+  enableValidation };*/

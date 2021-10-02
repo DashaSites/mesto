@@ -78,7 +78,7 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, inp
 
 // ФУНКЦИЯ ВАЛИДАЦИИ ВСЕХ ФОРМ
 
-const enableValidation = (config) => {
+export const enableValidation = (config) => {
   const formList = document.querySelectorAll(config.formSelector);
   formList.forEach(formElement => {
     setEventListeners(
@@ -92,13 +92,4 @@ const enableValidation = (config) => {
   });
 };
 
-/*export { showInputError,
-  hideInputError,
-  checkInputValidity,
-  hasInvalidInput,
-  hasNotInputValues,
-  disableSubmitButton,
-  enableSubmitButton,
-  toggleButtonState,
-  setEventListeners,
-  enableValidation };*/
+

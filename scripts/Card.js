@@ -1,41 +1,13 @@
 // ПР 7
 
-// МАССИВ КАРТОЧЕК - ВО ВНЕШНЕЙ ОБЛАСТИ ПО ОТНОШЕНИЮ К КЛАССУ:
-const initialCards = [
-
-  {
-    caption: 'Болото',
-    image: './images/hippos.jpg'
-  },
-  {
-    caption: 'Нида',
-    image: './images/nida.png'
-  },
-  {
-    caption: 'Яффо',
-    image: './images/jaffa.jpg'
-  },
-  {
-    caption: 'Эфиопия',
-    image: './images/ethiopia.jpg'
-  },
-  {
-    caption: 'Серенгети',
-    image: './images/serengeti.jpg'
-  },
-  {
-    caption: 'Тарангире',
-    image: './images/tarangire.jpg'
-  }
-  ];
-
   // ПЕРЕМЕННЫЕ - ТОЖЕ ВО ВНЕШНЕЙ ОБЛАСТИ ПО ОТНОШЕНИЮ К КЛАССУ:
   //const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
   //const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
 
 
+
 // КЛАСС ДЛЯ ОБРАБОТКИ КАРТОЧЕК
- class Card {
+ export default class Card {
   // КОНСТРУКТОР
   constructor(data, cardSelector) {
     this._image = data.image; // Приватные поля для наполнения конкретной карточки: они нужны только внутри класса
@@ -100,20 +72,7 @@ const initialCards = [
 } // Конец класса Card
 
 
-////////// ФУНКЦИИ //////////
-// ПОДКЛЮЧЕНИЕ МАССИВА
-// Обойдем весь массив initialCards и для каждого его элемента:
-// 1) создать новый экземпляр класса Card,
-// 2) подготовить карточку к публикации
-// 3) и добавить новую карточку в DOM:
-initialCards.forEach((initialCard) => {
-  // Создаем экземпляр карточки:
-  const card = new Card(initialCard, '#card-template');
-  // Создаем карточку и возвращаем ее:
-  const cardElement = card.generateCard();
-  // Добавляем в DOM:
-  cardsElement.prepend(cardElement);
-});
+
 
 
 

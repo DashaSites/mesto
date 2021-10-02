@@ -1,15 +1,7 @@
-/*import Card from './Card.js'
-import { showInputError,
-  hideInputError,
-  checkInputValidity,
-  hasInvalidInput,
-  hasNotInputValues,
-  disableSubmitButton,
-  enableSubmitButton,
-  toggleButtonState,
-  setEventListeners,
-  enableValidation } from './FormValidator.js'
-  */
+import Card from './Card.js';
+import { initialCards } from './data.js';
+import { enableValidation } from './FormValidator.js';
+
 
 ////////// ПЕРЕМЕННЫЕ //////////
 
@@ -43,6 +35,21 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 
 
+
+////////// ФУНКЦИИ //////////
+// ПОДКЛЮЧЕНИЕ МАССИВА
+// Обойдем весь массив initialCards и для каждого его элемента:
+// 1) создать новый экземпляр класса Card,
+// 2) подготовить карточку к публикации
+// 3) и добавить новую карточку в DOM:
+initialCards.forEach((initialCard) => {
+  // Создаем экземпляр карточки:
+  const card = new Card(initialCard, '#card-template');
+  // Создаем карточку и возвращаем ее:
+  const cardElement = card.generateCard();
+  // Добавляем в DOM:
+  cardsElement.prepend(cardElement);
+});
 
 
 

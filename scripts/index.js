@@ -30,21 +30,30 @@ const validationConfig = {
 };
 
 
-const cardsElement = document.querySelector('.elements'); // КОНТЕЙНЕР ДЛЯ ЗАПИХИВАНИЯ МАССИВА ФОТОГРАФИЙ
+const cardsElement = document.querySelector('.elements'); // КОНТЕЙНЕР ДЛЯ ЗАПИХИВАНИЯ МАССИВА ФОТОК
 const cardTemplate = document.querySelector('#card-template').content;
 
 
 
 
 ////////// ФУНКЦИИ //////////
+/*
+//ФУНКЦИЯ СОЗДАНИЯ НОВОЙ КАРТОЧКИ, ЧТОБЫ НЕ ДУБЛИРОВАТЬ КОД.
+  // Надо применить ее в цикле по массиву и в попапе по сабмиту формы
+  const createCard = (data) => {
+    return new Card(data.name, data.link);
+  }
+*/
+
 // ПОДКЛЮЧЕНИЕ МАССИВА
 // Обойдем весь массив initialCards и для каждого его элемента:
-// 1) создать новый экземпляр класса Card,
-// 2) подготовить карточку к публикации
-// 3) и добавить новую карточку в DOM:
-initialCards.forEach((initialCard) => {
+// 1) создадим новый экземпляр класса Card,
+// 2) подготовим карточку к публикации
+// 3) и добавим новую карточку в DOM:
+initialCards.forEach((cardData) => {
   // Создаем экземпляр карточки:
-  const card = new Card(initialCard, '#card-template');
+  //const card = createCard(cardData);
+  const card = new Card(cardData, '#card-template', clickPreviewImage);
   // Создаем карточку и возвращаем ее:
   const cardElement = card.generateCard();
   // Добавляем в DOM:
@@ -103,12 +112,14 @@ const createCard = (data) => {
   elementImage.src = data.image;
   elementImage.alt = ' ';
   cardElement.querySelector('.element__caption').textContent = data.caption;
+
   //cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
   //cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
-  cardElement.querySelector('.element__image').addEventListener('click', openImagePopup); // ПРИВЯЗАЛИ К КАРТИНКЕ НА КАРТОЧКЕ СЛУШАТЕЛЬ КЛИКОВ ПО ЭТОЙ КАРТИНКЕ
+  //cardElement.querySelector('.element__image').addEventListener('click', clickPreviewImage); // Слушатель кликов по картинке на карточке для открытия попапа-3
 
   return cardElement;
 };
+
 
 
 // ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
@@ -128,24 +139,15 @@ function openPopup(popup) {
 }
 
 
-// ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-3 (УВЕЛИЧЕННАЯ КАРТОЧКА) ПО КЛИКУ НА КАРТИНКУ
-function openImagePopup(event) {
-  const imagePopupElement = imagePopup.querySelector('.popup__image'); // ФОТОГРАФИЯ В ПОПАПЕ-3
-  const captionPopupElement = imagePopup.querySelector('.popup__caption'); // ПОДПИСЬ В ПОПАПЕ-3
+// ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-3 ПО КЛИКУ НА КАРТИНКУ
+  function clickPreviewImage(image, caption) {
+    document.querySelector('.popup__image').src = image;
+    document.querySelector('.popup__caption').textContent = caption;
+    document.querySelector('.popup__image').alt = caption;
 
-  openPopup(imagePopup);
+    openPopup(imagePopup);
+  }
 
-  const item = event.target;
-  imagePopupElement.src = item.src;
-  captionPopupElement.textContent = event.target
-  .closest('.element')
-  .querySelector('.element__caption')
-  .textContent;
-  imagePopupElement.alt = event.target
-  .closest('.element')
-  .querySelector('.element__caption')
-  .textContent;
-};
 
 
 // ФУНКЦИЯ АКТИВИЗАЦИИ ЛАЙКОВ НА КАРТОЧКАХ
@@ -166,30 +168,43 @@ function openPopupAddCard() {
 buttonPopupAddCardOpen.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
 
 
-//ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
-const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
-const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
-const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
 
+//ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
 
 // ФУНКЦИЯ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
+const addNewCardData = (event) => {
+  event.preventDefault();
 
-const addNewCardData = event => {
-  event.preventDefault(); // ОТМЕНЯЕМ ОТПРАВКУ ДАННЫХ НА СЕРВЕР
-  const image = cardImage.value,
-  caption = cardCaption.value
-  cardsElement.prepend(createCard({ image, caption }));
+  const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
+  const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
 
-  formAddCard.reset(); // ПОСЛЕ ЧЕГО СБРАСЫВАЕМ ПОЛЯ ФОРМЫ
+  // Кладем значения попапа в "сундук" для их передачи в конструктор
+  const data = {
+    image: cardImage.value,
+    caption: cardCaption.value
+  };
+
+  // Создаем объект карточки по образцу класса Card:
+  const card = new Card(data, '#card-template', clickPreviewImage);
+
+  // Готовим карточку к печати, используя публичный метод класса Card:
+  const cardElement = card.generateCard();
+  // Добавляем ее в DOM:
+  cardsElement.prepend(cardElement);
+
+  //Сбрасываем поля формы:
+  formAddCard.reset();
 
   closePopup(event);
   // КНОПКУ САБМИТА ПОСЛЕ САБМИТА ФОРМЫ ДЕАКТИВИРУЕМ В ФАЙЛЕ VALIDATE.JS
-};
+}
+
+
 
 // ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
 const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ
 
-popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ ПРИ КЛИКЕ СООТВЕТСТВУЮЩИЙ ПОПАП
+popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ КЛИКНУТЫЙ ПОПАП
   item.addEventListener('mousedown', function(event) {
     if (event.target.classList.contains('popup_opened')) {
       closePopup(event);
@@ -205,6 +220,30 @@ buttonPopupEditProfileOpen.addEventListener('click', openPopupEditProfile); //С
 formAddCard.addEventListener('submit', addNewCardData); // ВЫЗОВ ФУНКЦИИ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
 
 enableValidation(validationConfig); // ВЫЗОВ ФУНКЦИИ ВАЛИДАЦИИ ВСЕХ ФОРМ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -306,7 +345,7 @@ const createCard = (data) => {
   cardElement.querySelector('.element__caption').textContent = data.caption;
   cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
   cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
-  cardElement.querySelector('.element__image').addEventListener('click', openImagePopup); // ПРИВЯЗАЛИ К КАРТИНКЕ НА КАРТОЧКЕ СЛУШАТЕЛЬ КЛИКОВ ПО ЭТОЙ КАРТИНКЕ
+  cardElement.querySelector('.element__image').addEventListener('click', clickPreviewImage); // ПРИВЯЗАЛИ К КАРТИНКЕ НА КАРТОЧКЕ СЛУШАТЕЛЬ КЛИКОВ ПО ЭТОЙ КАРТИНКЕ
 
   return cardElement;
 };
@@ -330,7 +369,7 @@ function openPopup(popup) {
 
 
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-3 (УВЕЛИЧЕННАЯ КАРТОЧКА) ПО КЛИКУ НА КАРТИНКУ
-function openImagePopup(event) {
+function clickPreviewImage(event) {
   const imagePopupElement = imagePopup.querySelector('.popup__image'); // ФОТОГРАФИЯ В ПОПАПЕ-3
   const captionPopupElement = imagePopup.querySelector('.popup__caption'); // ПОДПИСЬ В ПОПАПЕ-3
 

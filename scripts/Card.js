@@ -1,25 +1,19 @@
-// ПР 7
-
-  // ПЕРЕМЕННЫЕ - ТОЖЕ ВО ВНЕШНЕЙ ОБЛАСТИ ПО ОТНОШЕНИЮ К КЛАССУ:
-  //const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
-  //const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
-
-
 
 // КЛАСС ДЛЯ ОБРАБОТКИ КАРТОЧЕК
  export default class Card {
   // КОНСТРУКТОР
-  constructor(data, cardSelector) {
-    this._image = data.image; // Приватные поля для наполнения конкретной карточки: они нужны только внутри класса
-    this._caption = data.caption; // Приватные поля для наполнения конкретной карточки: они нужны только внутри класса
-    this._cardSelector = cardSelector; // А это селектор шаблона разметки
+  constructor(data, cardSelector, clickPreviewImage) {
+    this._image = data.image; // Приватные поля для наполнения конкретной карточки
+    this._caption = data.caption; // Приватные поля для наполнения конкретной карточки
+    this._cardSelector = cardSelector; // Селектор шаблона разметки
+    this._clickPreviewImage = clickPreviewImage; // Обработчик клика по картинке -> открывает попап
   }
 
-  // ШАБЛОН РАЗМЕТКИ КАРТОЧКИ (Для наполнения разметки данными и публикации карточки на странице — ниже другие методы)
+  // СОЗДАДИМ ШАБЛОН РАЗМЕТКИ КАРТОЧКИ (наполнять разметку данными и публиковать карточку на странице будем ниже другими методами)
   _getTemplate() {
-    // Заберем шаблон из HTML и клонируем ее элемент:
+    // Заберем шаблон из HTML и клонируем его элемент:
     const cardElement = document
-    .querySelector(this._cardSelector) // Тут селектор шаблона разметки
+    .querySelector(this._cardSelector) // Тут селектор шаблона разметки: он же выше в конструкторе
     .content
     .querySelector('.element')
     .cloneNode(true);
@@ -28,10 +22,14 @@
     return cardElement;
   }
 
-  // Подготовим карточку к публикации (наполним контентом) и настроим ее поведение:
+
+
+
+  // ПОДГОТОВИМ КАРТОЧКУ К ПУБЛИКАЦИИ: НАПОЛНИМ ЕЕ КОНТЕНТОМ И НАСТРОИМ ЕЕ ПОВЕДЕНИЕ
   generateCard() {
-    // Вставим шаблон разметки в приватное поле _element:
+    // Вставим созданный шаблон разметки в приватное поле _element:
     this._element = this._getTemplate();
+
     //Подключим к this-карточке все обработчики слушателей:
     this._setEventListeners();
 
@@ -44,8 +42,12 @@
    return this._element;
   }
 
- // СЛУШАТЕЛИ КЛИКОВ
+
+
+
+ // СЛУШАТЕЛИ КЛИКОВ ПО КАРТОЧКЕ
   _setEventListeners() {
+
     // Слушатель лайков:
     this._element.querySelector('.element__like-button').addEventListener('click', () => {
       this._likeButtonHandler();
@@ -56,18 +58,23 @@
       this._removeElementHandler();
   });
 
+  // Слушатель кликов по картинке -> вызов функции открытия попапа-3:
+    this._element.querySelector('.element__image').addEventListener('click', () => {
+      this._clickPreviewImage(this._image, this._caption);
+    });
   }
+
 // ФУНКЦИИ
-  // Функция лайка карточки
+  // Лайк карточки
   _likeButtonHandler() {
     this._element.querySelector('.element__like-button').classList.toggle('element__like-button_active');
   }
 
-  // Функция удаления карточки кликом по мусорке. Эта функция работает из Card с массивом,
-  // но не с новыми карточками, добавленными через попап-2
+  // Удаление карточки. Функция работает с массивом, но не работает с карточками, добавленными через попап-2
   _removeElementHandler() {
     this._element.closest('.element').remove();
   }
+
 
 } // Конец класса Card
 

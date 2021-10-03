@@ -3,6 +3,7 @@ class FormValidator {
     constructor() {
 
   }
+
 }
 */
 

@@ -65,12 +65,12 @@
   }
 
 // ФУНКЦИИ
-  // Лайк карточки
+  // Лайк
   _likeButtonHandler() {
     this._element.querySelector('.element__like-button').classList.toggle('element__like-button_active');
   }
 
-  // Удаление карточки. Функция работает с массивом, но не работает с карточками, добавленными через попап-2
+  // Удаление карточки
   _removeElementHandler() {
     this._element.closest('.element').remove();
   }

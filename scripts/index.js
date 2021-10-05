@@ -1,6 +1,6 @@
 import Card from './Card.js';
 import { initialCards } from './data.js';
-import { enableValidation } from './FormValidator.js';
+import FormValidator from './FormValidator.js';
 
 
 ////////// ПЕРЕМЕННЫЕ //////////
@@ -11,22 +11,26 @@ const userName = document.querySelector('.profile__name');
 const userOccupation = document.querySelector('.profile__occupation');
 const nameInput = popupEditProfile.querySelector('.popup__form-input-item_type_name');
 const jobInput = popupEditProfile.querySelector('.popup__form-input-item_type_occupation');
-const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formSubmitEditProfileButton = popupEditProfile.querySelector('.popup__submit-button');
 const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
 const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
 const popupAddCard = document.querySelector('.popup_type_add-card'); // КОНСТАНТА ДЛЯ ПОПАПА-2
-const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
 const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА САБМИТА В ПОПАПЕ-2
 const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
+// Константа формы-1
+const formEditProfile = popupEditProfile.querySelector('.popup__form');
+// Константа формы-2
+const formAddCard = popupAddCard.querySelector('.popup__form');
 
+
+
+// Объект конфиг, в котором передаем все необходимые селекторы:
 const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__form-input-item',
-  submitButtonSelector: '.popup__submit-button',
-  disabledButtonClass: 'popup__submit-button_disabled',
-  inputErrorClass: 'popup__form-input-item_type_error',
-  errorClass: 'error_visible'
+  inputSelector: '.popup__form-input-item', // Инпут
+  submitButtonSelector: '.popup__submit-button', // Кнопка сабмита
+  disabledButtonClass: 'popup__submit-button_disabled', // Класс, который дизейблит кнопку сабмита
+  inputErrorClass: 'popup__form-input-item_type_error', // Класс, который делает неправильному инпуту спецобводку
+  errorClass: 'error_visible' // Класс со стилями, который при ошибке делает видимым сообщение об ошибке
 };
 
 
@@ -37,13 +41,6 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 
 ////////// ФУНКЦИИ //////////
-/*
-//ФУНКЦИЯ СОЗДАНИЯ НОВОЙ КАРТОЧКИ, ЧТОБЫ НЕ ДУБЛИРОВАТЬ КОД.
-  // Надо применить ее в цикле по массиву и в попапе по сабмиту формы
-  const createCard = (data) => {
-    return new Card(data.name, data.link);
-  }
-*/
 
 // ПОДКЛЮЧЕНИЕ МАССИВА
 // Обойдем весь массив initialCards и для каждого его элемента:
@@ -52,7 +49,6 @@ const cardTemplate = document.querySelector('#card-template').content;
 // 3) и добавим новую карточку в DOM:
 initialCards.forEach((cardData) => {
   // Создаем экземпляр карточки:
-  //const card = createCard(cardData);
   const card = new Card(cardData, '#card-template', clickPreviewImage);
   // Создаем карточку и возвращаем ее:
   const cardElement = card.generateCard();
@@ -98,12 +94,6 @@ formEditProfile.addEventListener(
 );
 
 
-// ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ КАРТОЧЕК ИЗ ФОТОГАЛЕРЕИ
-//const removeElementHandler = (event) => {
-//event.target.closest('.element').remove();
-//};
-
-
 // ФУНКЦИЯ ДЛЯ ВЫКЛАДЫВАНИЯ ФОТКИ ИЗ МАССИВА НА САЙТ ЧЕРЕЗ ШАБЛОН
 
 const createCard = (data) => {
@@ -113,13 +103,8 @@ const createCard = (data) => {
   elementImage.alt = ' ';
   cardElement.querySelector('.element__caption').textContent = data.caption;
 
-  //cardElement.querySelector('.element__like-button').addEventListener('click', likeButtonHandler);
-  //cardElement.querySelector('.element__button-remove').addEventListener('click', removeElementHandler);
-  //cardElement.querySelector('.element__image').addEventListener('click', clickPreviewImage); // Слушатель кликов по картинке на карточке для открытия попапа-3
-
   return cardElement;
 };
-
 
 
 // ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
@@ -150,14 +135,6 @@ function openPopup(popup) {
 
 
 
-// ФУНКЦИЯ АКТИВИЗАЦИИ ЛАЙКОВ НА КАРТОЧКАХ
-//function likeButtonHandler(event) {
-//  const elementLikeButton = event.target; // ТАРГЕТ = КНОПКА ЛАЙКА, ПО КОТОРОЙ КЛИКНУЛИ
-//  elementLikeButton.classList.toggle('element__like-button_active'); // ЕЙ ДОБАВЛЯЕТСЯ МОДИФИКАТОР ЛАЙКНУТОЙ КНОПКИ
-// };
-
-
-
 //////// ПОПАП-2: ОТКРЫТИЕ-ЗАКРЫТИЕ ФОРМЫ + ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ////////
 
 // ФУНКЦИЯ ВКЛЮЧЕНИЯ ПОПАПА-2
@@ -166,7 +143,6 @@ function openPopupAddCard() {
 }
 
 buttonPopupAddCardOpen.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
-
 
 
 //ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
@@ -200,7 +176,6 @@ const addNewCardData = (event) => {
 }
 
 
-
 // ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
 const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ
 
@@ -213,13 +188,27 @@ popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ �
 });
 
 
-////////// ВЫЗОВЫ ФУНКЦИЙ //////////
 
 buttonPopupEditProfileOpen.addEventListener('click', openPopupEditProfile); //СЛУШАТЕЛЬ КЛИКОВ НА КНОПКЕ ОТКРЫТИЯ ПОПАПА-1
 
 formAddCard.addEventListener('submit', addNewCardData); // ВЫЗОВ ФУНКЦИИ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
 
-enableValidation(validationConfig); // ВЫЗОВ ФУНКЦИИ ВАЛИДАЦИИ ВСЕХ ФОРМ
+
+
+ // ОБЪЯВЛЕНИЕ ОБЪЕКТОВ ВАЛИДАТОРА И ВЫЗОВ ИХ ПУБЛИЧНОГО МЕТОДА ENABLEVALIDATION
+// Объект валидатора для формы-1
+const validatorEditProfile = new FormValidator(validationConfig, formEditProfile);
+// Объект валидатора для формы-2
+const validatorAddCard = new FormValidator(validationConfig, formAddCard);
+
+// Вызываем метод валидации у объекта validatorEditProfile:
+validatorEditProfile.enableValidation();
+
+// Вызываем метод валидации у объекта validatorAddCard:
+validatorAddCard.enableValidation();
+
+
+
 
 
 

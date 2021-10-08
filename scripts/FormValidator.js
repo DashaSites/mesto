@@ -11,9 +11,9 @@ export default class FormValidator {
 
       // Параметр для проверяемого элемента формы:
       this._formElement = formElement;
-      // Объявили переменную для кнопки сабмита в данной форме:
+      // Объявим классовую переменную для кнопки сабмита в данной форме:
       this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
-      // В переменную inputList сложили массив-коллекцию всех полей проверяемой формы:
+      // В классовую переменную inputList сложили массив-коллекцию всех полей проверяемой формы:
       this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
   }
 
@@ -48,16 +48,16 @@ _checkInputValidity = (inputElement) => {
 };
 
 // Функция проверки: есть ли хотя бы один невалидный инпут?
-_hasInvalidInput = (inputList) => {
-  return inputList.some(inputElement => {
+_hasInvalidInput() {
+  return this._inputList.some(inputElement => {
     // Методом some чекаем, можем ли мы хотя бы для одного инпута данной формы вернуть значение "невалидно":
     return !inputElement.validity.valid;
   });
 };
 
 // Функция проверки: а если все поля формы пустые?
-_hasNotInputValues = (inputList) => {
-  return inputList.every(inputElement => {
+_hasNotInputValues() {
+  return this._inputList.every(inputElement => {
     return inputElement.value.length === 0;
   });
 };
@@ -66,23 +66,34 @@ _hasNotInputValues = (inputList) => {
 _disableSubmitButton() {
   // Добавляем класс модификатора, дизейблящий кнопку
   this._buttonElement.classList.add(this._disabledButtonClass);
+  this._buttonElement.disabled = true;
 };
 
 // Функция включения кнопки сабмита:
 _enableSubmitButton() {
   // Удаляем класс модификатора, который дизейблил кнопку
   this._buttonElement.classList.remove(this._disabledButtonClass);
+  this._buttonElement.disabled = false;
 };
 
 // Метод - переключатель состояния кнопки сабмита:
-_toggleButtonState = () => {
+_toggleButtonState() {
 
-  if (this._hasInvalidInput(this._inputList) || this._hasNotInputValues(this._inputList)) {
+  if (this._hasInvalidInput() || this._hasNotInputValues()) {
     this._disableSubmitButton();
   } else {
     this._enableSubmitButton();
   }
 };
+
+resetValidation() {
+  this._toggleButtonState(); // Управляем кнопкой
+
+  this._inputList.forEach((inputElement) => {
+    const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+    this._hideInputError(inputElement, errorElement) // Пробегаемся по всем инпутам и очищаем ошибки
+  });
+}
 
 // Навешиваем обработчики событий на проверяемую форму:
 _setEventListeners() {
@@ -118,6 +129,12 @@ enableValidation() {
 }
 
 } // Конец класса FormValidator
+
+
+
+
+
+
 
 
 

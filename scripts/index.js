@@ -6,21 +6,28 @@ import FormValidator from './FormValidator.js';
 ////////// ПЕРЕМЕННЫЕ //////////
 
 const buttonPopupEditProfileOpen = document.querySelector('.profile__edit-button'); //КНОПКА ОТКРЫТИЯ ПОПАПА-1
-const popupEditProfile = document.querySelector('.popup_type_edit-profile'); //КОНСТАНТА ДЛЯ ПОПАПА-1 (ПОПАП РЕДАКТИРОВАНИЯ ПРОФИЛЯ):
+const popupEditProfile = document.querySelector('.popup_type_edit-profile'); //КОНСТАНТА ДЛЯ ПОПАПА-1
 const userName = document.querySelector('.profile__name');
 const userOccupation = document.querySelector('.profile__occupation');
 const nameInput = popupEditProfile.querySelector('.popup__form-input-item_type_name');
 const jobInput = popupEditProfile.querySelector('.popup__form-input-item_type_occupation');
 const formSubmitEditProfileButton = popupEditProfile.querySelector('.popup__submit-button');
-const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
-const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
+const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КНОПКА ОТКРЫТИЯ ПОПАПА-2
 const popupAddCard = document.querySelector('.popup_type_add-card'); // КОНСТАНТА ДЛЯ ПОПАПА-2
 const formSubmitAddCardButton = popupAddCard.querySelector('.popup__submit-button'); //КНОПКА САБМИТА В ПОПАПЕ-2
 const imagePopup = document.querySelector('.popup_type_large-image'); // КОНСТАНТА ДЛЯ ПОПАПА-3
-// Константа формы-1
+// Константа формы-1:
 const formEditProfile = popupEditProfile.querySelector('.popup__form');
-// Константа формы-2
+// Константа формы-2:
 const formAddCard = popupAddCard.querySelector('.popup__form');
+// Картинка из попапа-2:
+const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
+// Кепшен из попапа-2:
+const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
+// Картинка в попапе-3:
+const popupImage = document.querySelector('.popup__image');
+// Кепшен в попапе-3:
+const popupCaption = document.querySelector('.popup__caption');
 
 
 
@@ -39,20 +46,22 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 
 
-
 ////////// ФУНКЦИИ //////////
 
+// Создаем вспомогательную общую функцию createCard для получения экземпляра класса Card:
+const createCard = (data) => {
+  return new Card(data, '#card-template', clickPreviewImage);
+}
+
 // ПОДКЛЮЧЕНИЕ МАССИВА
+
 // Обойдем весь массив initialCards и для каждого его элемента:
-// 1) создадим новый экземпляр класса Card,
+// 1) Получим экземпляр класса Card,
 // 2) подготовим карточку к публикации
-// 3) и добавим новую карточку в DOM:
+// 3) и добавим получившуюся карточку в DOM:
 initialCards.forEach((cardData) => {
-  // Создаем экземпляр карточки:
-  const card = new Card(cardData, '#card-template', clickPreviewImage);
-  // Создаем карточку и возвращаем ее:
+  const card = createCard(cardData);
   const cardElement = card.generateCard();
-  // Добавляем в DOM:
   cardsElement.prepend(cardElement);
 });
 
@@ -60,60 +69,26 @@ initialCards.forEach((cardData) => {
 
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-1
 function openPopupEditProfile() {
-  if (!popupEditProfile.classList.contains('popup_opened')) {
-    nameInput.value = userName.textContent;
-    jobInput.value = userOccupation.textContent;
-  }
+  nameInput.value = userName.textContent;
+  jobInput.value = userOccupation.textContent;
 
   openPopup(popupEditProfile);
+  validatorEditProfile.resetValidation();
 }
 
 
-// СЛУШАТЕЛЬ КЛИКОВ ПО ВСЕЙ КОЛЛЕКЦИИ КНОПОК ЗАКРЫТИЯ ПОПАПА
-buttonsPopupClose.forEach((item) => {
-  item.addEventListener('click', closePopup);
-});
-
 
 // ОБЩАЯ ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ
-function closePopup(event) {
-  event.target.closest('.popup').classList.remove('popup_opened');
+
+function closePopup() {
+  // 1) Находим открытый попап через квериСелектор (потому что когда мы убрали из этой функции event.target,
+  // функция клика по крестику больше не передает сюда никакой event, и неизвестно, какой попап надо закрыть.
+  // Поэтому сперва находим здесь открытый попап), 2) снимаем с него модификатор popup_opened
+  document.querySelector('.popup_opened').classList.remove('popup_opened');
 
   document.removeEventListener('keydown', closePopupByEsc); // СНИМАЕМ СЛУШАТЕЛЬ КЛИКОВ ПО ESC ДЛЯ СВОРАЧИВАНИЯ ПОПАПА
 };
 
-// ФУНКЦИЯ ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ В ПОПАПЕ-1
-formEditProfile.addEventListener(
-  'submit',
-  function formSubmitHandler(event) {
-    event.preventDefault();
-    closePopup(event);
-    userName.textContent = nameInput.value;
-    userOccupation.textContent = jobInput.value;
-  }
-);
-
-
-// ФУНКЦИЯ ДЛЯ ВЫКЛАДЫВАНИЯ ФОТКИ ИЗ МАССИВА НА САЙТ ЧЕРЕЗ ШАБЛОН
-
-const createCard = (data) => {
-  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-  const elementImage = cardElement.querySelector('.element__image');
-  elementImage.src = data.image;
-  elementImage.alt = ' ';
-  cardElement.querySelector('.element__caption').textContent = data.caption;
-
-  return cardElement;
-};
-
-
-// ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
-const closePopupByEsc = (event) => {
-
-  if (event.key === 'Escape') {
-    document.querySelector('.popup_opened').classList.remove('popup_opened');
-  }
-};
 
 
 // ОБЩАЯ ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА, КОТОРАЯ ИСПОЛЬЗУЕТСЯ В ДРУГИХ ФУНКЦИЯХ ОТКРЫТИЯ
@@ -123,12 +98,34 @@ function openPopup(popup) {
   document.addEventListener('keydown', closePopupByEsc); // ВЕШАЕМ СЛУШАТЕЛЬ КЛИКОВ ПО ESC ДЛЯ СВОРАЧИВАНИЯ ПОПАПА
 }
 
+// ФУНКЦИЯ ДЛЯ РЕДАКТИРОВАНИЯ ДАННЫХ В ПОПАПЕ-1
+formEditProfile.addEventListener(
+  'submit',
+  function formSubmitHandler(event) {
+    event.preventDefault();
+    closePopup(event.target.closest('.popup'));
+    userName.textContent = nameInput.value;
+    userOccupation.textContent = jobInput.value;
+  }
+);
+
+
+
+// ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ НАЖАТИЕМ НА ESC
+const closePopupByEsc = (event) => {
+
+  if (event.key === 'Escape') {
+    closePopup(document.querySelector('.popup_opened'));
+  }
+};
+
+
 
 // ФУНКЦИЯ ОТКРЫТИЯ ПОПАПА-3 ПО КЛИКУ НА КАРТИНКУ
   function clickPreviewImage(image, caption) {
-    document.querySelector('.popup__image').src = image;
-    document.querySelector('.popup__caption').textContent = caption;
-    document.querySelector('.popup__image').alt = caption;
+    popupImage.src = image;
+    popupCaption.textContent = caption;
+    popupImage.alt = caption;
 
     openPopup(imagePopup);
   }
@@ -140,19 +137,16 @@ function openPopup(popup) {
 // ФУНКЦИЯ ВКЛЮЧЕНИЯ ПОПАПА-2
 function openPopupAddCard() {
   openPopup(popupAddCard);
+  validatorAddCard.resetValidation();
 }
 
 buttonPopupAddCardOpen.addEventListener('click', openPopupAddCard); // СЛУШАТЕЛЬ КЛИКОВ ПО КНОПКЕ ОТКРЫТИЯ ПОПАПА-2
 
 
 //ДОБАВЛЕНИЕ И СОХРАНЕНИЕ НОВОЙ КАРТОЧКИ
-
 // ФУНКЦИЯ СОХРАНЕНИЯ НОВОЙ КАРТОЧКИ ИЗ ПОПАПА
 const addNewCardData = (event) => {
   event.preventDefault();
-
-  const cardImage = formAddCard.querySelector('.popup__form-input-item_type_image-link');
-  const cardCaption = formAddCard.querySelector('.popup__form-input-item_type_title');
 
   // Кладем значения попапа в "сундук" для их передачи в конструктор
   const data = {
@@ -160,8 +154,8 @@ const addNewCardData = (event) => {
     caption: cardCaption.value
   };
 
-  // Создаем объект карточки по образцу класса Card:
-  const card = new Card(data, '#card-template', clickPreviewImage);
+// Получаем объект = экземпляр класса Card через вспомогательную общую функцию createCard:
+  const card = createCard(data);
 
   // Готовим карточку к печати, используя публичный метод класса Card:
   const cardElement = card.generateCard();
@@ -176,13 +170,18 @@ const addNewCardData = (event) => {
 }
 
 
-// ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ
+// ЗАКРЫТИЕ ПОПАПА КЛИКОМ НА ОВЕРЛЕЙ ИЛИ КЛИКОМ ПО КРЕСТИКУ - ОБЪЕДИНЕНО В ОДНОЙ ФУНКЦИИ
 const popupsAll = document.querySelectorAll('.popup'); // КОНСТАНТА ДЛЯ ВСЕХ ПОПАПОВ СРАЗУ
 
-popupsAll.forEach((item) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ КЛИКНУТЫЙ ПОПАП
-  item.addEventListener('mousedown', function(event) {
+popupsAll.forEach((popup) => { // ПРОХОДИМСЯ ПО КАЖДОМУ ИЗ ПОПАПОВ, ОТСЛЕЖИВАЯ КЛИКИ, И СВОРАЧИВАЕМ КЛИКНУТЫЙ ПОПАП
+  popup.addEventListener('mousedown', function(event) {
+    // Если кликают по открытому попапу, срабатывает функция закрытия попапа
     if (event.target.classList.contains('popup_opened')) {
-      closePopup(event);
+      closePopup(popup);
+    }
+    // А если клик приходится по кнопке закрытия попапа, срабатывает функция закрытия попапа
+    if (event.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
     }
   });
 });
@@ -247,7 +246,7 @@ validatorAddCard.enableValidation();
 
 /*
 
-//РАБОТАЮЩИЙ ПРЕЖНИЙ КОД
+// ВАРИАНТ, КОТОРЫЙ РАБОТАЛ ДО ООП
 
 ////////// ПЕРЕМЕННЫЕ //////////
 
@@ -259,7 +258,7 @@ const nameInput = popupEditProfile.querySelector('.popup__form-input-item_type_n
 const jobInput = popupEditProfile.querySelector('.popup__form-input-item_type_occupation');
 const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formSubmitEditProfileButton = popupEditProfile.querySelector('.popup__submit-button');
-const buttonsPopupClose = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
+const popupCloseButtons = document.querySelectorAll('.popup__close-button'); // ОБЩАЯ КНОПКА ЗАКРЫТИЯ ПОПАПОВ
 const buttonPopupAddCardOpen = document.querySelector('.profile__add-button'); // КОНСТАНТА ДЛЯ КНОПКИ ОТКРЫТИЯ ПОПАПА-2 (ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ)
 const popupAddCard = document.querySelector('.popup_type_add-card'); // КОНСТАНТА ДЛЯ ПОПАПА-2
 const formAddCard = popupAddCard.querySelector('.popup__form'); //ФОРМА В ПОПАПЕ-2
@@ -295,7 +294,7 @@ function openPopupEditProfile() {
 
 
 // СЛУШАТЕЛЬ КЛИКОВ ПО ВСЕЙ КОЛЛЕКЦИИ КНОПОК ЗАКРЫТИЯ ПОПАПА
-buttonsPopupClose.forEach((item) => {
+popupCloseButtons.forEach((item) => {
   item.addEventListener('click', closePopup);
 });
 

@@ -28,12 +28,17 @@
     // Вставим созданный шаблон разметки в приватное поле _element:
     this._element = this._getTemplate();
 
+    // Объявим классовую переменную для картинки карточки, чтобы не искать картинку несколько раз:
+    this._cardImage = this._element.querySelector('.element__image');
+    // Объявлю классовую переменную this._likeButton (= сделаю ее полем класса), чтобы искать этот элемент только 1 раз:
+    this._likeButton = this._element.querySelector('.element__like-button');
+
     //Подключим к this-карточке все обработчики слушателей:
     this._setEventListeners();
 
     // Добавим данные:
-    this._element.querySelector('.element__image').src = this._image;
-    this._element.querySelector('.element__image').alt = this._caption;
+    this._cardImage.src = this._image;
+    this._cardImage.alt = this._caption;
     this._element.querySelector('.element__caption').textContent = this._caption;
 
    // И вернем элемент:
@@ -45,7 +50,7 @@
   _setEventListeners() {
 
     // Слушатель лайков:
-    this._element.querySelector('.element__like-button').addEventListener('click', () => {
+    this._likeButton.addEventListener('click', () => {
       this._likeButtonHandler();
     });
 
@@ -55,7 +60,7 @@
   });
 
   // Слушатель кликов по картинке -> вызов функции открытия попапа-3:
-    this._element.querySelector('.element__image').addEventListener('click', () => {
+  this._cardImage.addEventListener('click', () => {
       this._clickPreviewImage(this._image, this._caption);
     });
   }
@@ -63,7 +68,7 @@
 // ФУНКЦИИ
   // Лайк
   _likeButtonHandler() {
-    this._element.querySelector('.element__like-button').classList.toggle('element__like-button_active');
+    this._likeButton.classList.toggle('element__like-button_active');
   }
 
   // Удаление карточки
@@ -74,61 +79,4 @@
 } // Конец класса Card
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// РАБОТАЮЩИЙ ПРЕЖНИЙ КОД
-
-// МАССИВ ИЗ 6 ФОТОГРАФИЙ
-
-const initialCards = [
-
-  {
-  caption: 'Болото',
-  image: './images/hippos.jpg'
-},
-{
-  caption: 'Нида',
-  image: './images/nida.png'
-},
-{
-  caption: 'Яффо',
-  image: './images/jaffa.jpg'
-},
-{
-  caption: 'Эфиопия',
-  image: './images/ethiopia.jpg'
-},
-{
-  caption: 'Серенгети',
-  image: './images/serengeti.jpg'
-},
-{
-  caption: 'Тарангире',
-  image: './images/tarangire.jpg'
-}
-];
-
-
-// ДЛЯ МАССИВА КАРТОЧЕК ВЫЗЫВАЕМ ФУНКЦИЮ, ЧТОБЫ ПРОЙТИСЬ ПО ВСЕМУ МАССИМУ И
-//ВЫЛОЖИТЬ ВСЕ ЕГО ФОТКИ НА САЙТ. АРГУМЕНТ ФУНКЦИИ ОБОЗНАЧАЕМ КАК ЭЛЕМЕНТ ЭТОГО МАССИВА
-initialCards.forEach((element) => {
-  cardsElement.prepend(createCard(element));
-});
-*/
 

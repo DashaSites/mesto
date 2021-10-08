@@ -80,11 +80,11 @@ function openPopupEditProfile() {
 
 // ОБЩАЯ ФУНКЦИЯ ЗАКРЫТИЯ ПОПАПОВ
 
-function closePopup() {
+function closePopup(popup) {
   // 1) Находим открытый попап через квериСелектор (потому что когда мы убрали из этой функции event.target,
   // функция клика по крестику больше не передает сюда никакой event, и неизвестно, какой попап надо закрыть.
   // Поэтому сперва находим здесь открытый попап), 2) снимаем с него модификатор popup_opened
-  document.querySelector('.popup_opened').classList.remove('popup_opened');
+  popup.classList.remove('popup_opened');
 
   document.removeEventListener('keydown', closePopupByEsc); // СНИМАЕМ СЛУШАТЕЛЬ КЛИКОВ ПО ESC ДЛЯ СВОРАЧИВАНИЯ ПОПАПА
 };
@@ -165,7 +165,8 @@ const addNewCardData = (event) => {
   //Сбрасываем поля формы:
   formAddCard.reset();
 
-  closePopup(event);
+  closePopup(event.target.closest('.popup'));
+
   // КНОПКУ САБМИТА ПОСЛЕ САБМИТА ФОРМЫ ДЕАКТИВИРУЕМ В ФАЙЛЕ VALIDATE.JS
 }
 
